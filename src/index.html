@@ -9,6 +9,7 @@
 
     <!-- Bootstrap -->
     <link href="vendor/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="./style.css">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -18,27 +19,8 @@
     <![endif]-->
 
     <style>
-      main {
-        margin-top: 60px;
-      }
-
-      #content {
-        display: none;
-      }
-
-      form {
-        width: 350px;
-        margin-bottom: 10px;
-      }
-
-      ul {
-        margin-bottom: 0px;
-      }
-
-      #completedTaskList .content {
-        color: grey;
-        text-decoration: line-through;
-      }
+    
+     
     </style>
   </head>
   <body>
@@ -71,21 +53,18 @@
             </div>
             <div id="content">
 
-            <div id="login">
-              <input id="name" type="text" class="form-control" placeholder="Your name..." required>
-              <input id="password" type="password" class="form-control" placeholder="Your password..." required>
-              <button onClick="App.login()" id="login">Login</button>
-              
-            </div>
+            
 
-            <div id="signup">
-              <input id="name-s" type="text" class="form-control" placeholder="Your name..." required>
-              <input id="password-s" type="password" class="form-control" placeholder="Your password..." required>
-              <button onClick="App.signup()" id="login">Signup</button>
-            </div>
 
               <div id="room-list">
                 <form onSubmit="App.createRoom(); return false;" style="display:none" id="add-form">
+                  <select name="" id="contract_id">
+                    <option value="1">Rixos premium</option>
+                    <option value="2">Side Lowe</option>
+                    <option value="3">Arum barut</option>
+                    <option value="4">Xanthe Resort</option>
+                  </select>
+                  
                   <input id="newTask" type="text" class="form-control" placeholder="Room name" required>
                   <input id="accom" type="number" class="form-control" placeholder="Allocation" required>
 
@@ -101,10 +80,64 @@
                 </ul>
 
               </div>
+
+
+              
             </div>
           </main>
         </div>
       </div>
+
+      <div id="login" class="login-box">
+        <h2>Login</h2>
+        <form class="form">
+          <div class="user-box">
+            <input class="input" id="name"  type="text"  required="">
+            <label class="label" for="">Username</label>
+          </div>
+          <!-- /.user-box -->
+          <div class="user-box">
+            <input class="input" id="password"  type="password" required="">
+            <label class="label" for="">Password</label>
+          </div>
+          <!-- /.user-box -->
+          <a onClick="App.login()">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            Submit
+          </a>
+        </form>
+        <!-- /form -->
+      </div>
+      <!-- /.login-box -->
+
+
+      <div id="signup" class="login-box">
+        <h2>Sign Up</h2>
+        <form class="form">
+          <div class="user-box">
+            <input class="input" id="name-s"  type="text"  required="">
+            <label class="label" for="">Username</label>
+          </div>
+          <!-- /.user-box -->
+          <div class="user-box">
+            <input class="input" id="password-s"  type="password" required="">
+            <label class="label" for="">Password</label>
+          </div>
+          <!-- /.user-box -->
+          <a onClick="App.signup()">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            Submit
+          </a>
+        </form>
+        <!-- /form -->
+      </div>
+      <!-- /.login-box -->
 
 
 

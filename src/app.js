@@ -9,6 +9,8 @@
 
 
 
+
+
 if(localStorage.getItem('user')){
   if(localStorage.getItem('user') == 'admin'){
     login.hide()
@@ -32,8 +34,10 @@ else{
   signup.hide()
   signupButton.show()
   logoutButton.hide()
-
 }
+
+
+
 App = {
   loading: false,
   contracts: {},
@@ -43,6 +47,8 @@ App = {
     await App.loadAccount()
     await App.loadContract()
     await App.render()
+    await App.getHotels()
+    await renderUserReservations()
   },
 
   loadWeb3: async () => {
@@ -82,28 +88,45 @@ App = {
     App.account = web3.eth.accounts[0]
     web3.eth.defaultAccount = web3.eth.accounts[0]
 
-    console.log(web3.eth.accounts)
-    console.log(App.account)
+    
   },
 
   loadContract: async () => {
     // Create a JavaScript version of the smart contract
     const todoList = await $.getJSON('Contract.json')
     const user = await $.getJSON('User.json')
+    const sideLowe = await $.getJSON('SideLowe.json')
+    const arumBarut = await $.getJSON('ArumBarut.json')
+    const xantheResort = await $.getJSON('XantheResort.json')
+
 
     App.contracts.TodoList = TruffleContract(todoList)
     App.contracts.User = TruffleContract(user)
+    App.contracts.SideLowe = TruffleContract(sideLowe)
+    App.contracts.ArumBarut = TruffleContract(arumBarut)
+    App.contracts.XantheResort = TruffleContract(xantheResort)
+
 
     App.contracts.TodoList.setProvider(App.web3Provider)
     App.contracts.User.setProvider(App.web3Provider)
+    App.contracts.SideLowe.setProvider(App.web3Provider)
+    App.contracts.ArumBarut.setProvider(App.web3Provider)
+    App.contracts.XantheResort.setProvider(App.web3Provider)
+
 
 
     // Hydrate the smart contract with values from the blockchain
     App.todoList = await App.contracts.TodoList.deployed()
     App.user = await App.contracts.User.deployed()
-    console.log(App.user)
+    App.sideLowe = await App.contracts.SideLowe.deployed()
+    App.arumBarut = await App.contracts.ArumBarut.deployed()
+    App.xantheResort = await App.contracts.XantheResort.deployed()
+
+
+    console.log(App.sideLowe)
 
   },
+
 
   render: async () => {
     // Prevent double render
@@ -125,15 +148,12 @@ App = {
   },
 
   renderTasks: async () => {
-    // Load the total task count from the blockchain
-    const roomCount = await App.todoList.roomCount()
-    console.log('asdasdasd',roomCount)
-    console.log(App)
-
     const $taskTemplate = $('.taskTemplate')
 
-  
-
+    
+    
+    const RIXOS_PREMIUM = App.todoList
+    var roomCount = await RIXOS_PREMIUM.roomCount()
     for (var i = 1; i <= roomCount; i++) {
       console.log('for a girdi')
       // Fetch the task data from the blockchain
@@ -148,12 +168,90 @@ App = {
       $newTaskTemplate.find('.content').html(taskContent + ' ' + taskAllocation)
       $newTaskTemplate.find('button')
                       .prop('name', taskId)
-                      .on('click', App.doReservation)
+                      .prop('roomName', taskContent)
+                      .prop('hotelName', await RIXOS_PREMIUM.hotelName())
+                      .on('click',(e)=>{
+                        doReservation(e,1)
+                      } )
       $('#taskList').append($newTaskTemplate)
+      $newTaskTemplate.show()
+    }
 
+    const SIDE_LOWE = App.sideLowe
+    var roomCount = await SIDE_LOWE.roomCount()
+    for (var i = 1; i <= roomCount; i++) {
+      console.log('for a girdi')
+      // Fetch the task data from the blockchain
+      
+      const room = await App.sideLowe.rooms(i)
+      const taskId = room[0].toNumber()
+      const taskContent = room[1]
+      const taskAllocation = room[2]
 
+      // Create the html for the task
+      const $newTaskTemplate = $taskTemplate.clone()
+      $newTaskTemplate.find('.content').html(taskContent + ' ' + taskAllocation)
+      $newTaskTemplate.find('button')
+                      .prop('name', taskId)
+                      .prop('roomName', taskContent)
+                      .prop('hotelName', await SIDE_LOWE.hotelName())
 
-      // Show the task
+                      .on('click',(e)=>{
+                        doReservation(e,2)
+                      } )
+      $('#taskList').append($newTaskTemplate)
+      $newTaskTemplate.show()
+    }
+
+    const ARUM_BARUT = App.arumBarut;
+    var roomCount = await ARUM_BARUT.roomCount()
+    for (var i = 1; i <= roomCount; i++) {
+      console.log('for a girdi')
+      // Fetch the task data from the blockchain
+      
+      const room = await App.arumBarut.rooms(i)
+      const taskId = room[0].toNumber()
+      const taskContent = room[1]
+      const taskAllocation = room[2]
+
+      // Create the html for the task
+      const $newTaskTemplate = $taskTemplate.clone()
+      $newTaskTemplate.find('.content').html(taskContent + ' ' + taskAllocation)
+      $newTaskTemplate.find('button')
+                      .prop('name', taskId)
+                      .prop('roomName', taskContent)
+                      .prop('hotelName', await ARUM_BARUT.hotelName())
+
+                      .on('click',(e)=>{
+                        doReservation(e,3)
+                      } )
+      $('#taskList').append($newTaskTemplate)
+      $newTaskTemplate.show()
+    }
+
+    const XANTHE_RESORT = App.xantheResort
+    var roomCount = await XANTHE_RESORT.roomCount()
+    for (var i = 1; i <= roomCount; i++) {
+      console.log('for a girdi')
+      // Fetch the task data from the blockchain
+      
+      const room = await App.xantheResort.rooms(i)
+      const taskId = room[0].toNumber()
+      const taskContent = room[1]
+      const taskAllocation = room[2]
+
+      // Create the html for the task
+      const $newTaskTemplate = $taskTemplate.clone()
+      $newTaskTemplate.find('.content').html(taskContent + ' ' + taskAllocation)
+      $newTaskTemplate.find('button')
+                      .prop('name', taskId)
+                      .prop('roomName', taskContent)
+                      .prop('hotelName', await XANTHE_RESORT.hotelName())
+
+                      .on('click',(e)=>{
+                        doReservation(e,4)
+                      } )
+      $('#taskList').append($newTaskTemplate)
       $newTaskTemplate.show()
     }
   },
@@ -172,10 +270,47 @@ App = {
     App.setLoading(true)
     const content = $('#newTask').val()
     const accom = $('#accom').val()
+    const contract_id = parseInt($('#contract_id').val())
+
+    console.log(content)
+    console.log(accom)
+    console.log('id',contract_id)
+
+    console.log(contract_id == 2)
+
+    switch (contract_id) {
+      case 1:
+        await App.todoList.createRoom(content,accom)
+
+        break;
+
+
+      case 2:
+        console.log('case 2')
+        await App.sideLowe.createRoom(content,accom)
+
+        break;
+    
+      case 3:
+        await App.arumBarut.createRoom(content,accom)
+
+        break;
+    
+      case 4:
+        await App.xantheResort.createRoom(content,accom)
+        break;
+          
+    
+      default:
+
+        break;
+    }
+
+
+
+    window.location.reload()
 
     
-    await App.todoList.createRoom(content,accom)
-    window.location.reload()
   },
 
   toggleCompleted: async (e) => {
@@ -189,6 +324,7 @@ App = {
     //App.setLoading(true)
     const userCount = await App.user.userCount()
     var isLoged = false;
+
 
     const name = document.getElementById('name').value;
     const password = document.getElementById('password').value;
@@ -217,6 +353,14 @@ App = {
    
   },
 
+  getHotels: async (e)=>{
+    console.log(await App.sideLowe.hotelName())
+    console.log(await App.todoList.hotelName())
+    console.log(await App.xantheResort.hotelName())
+    console.log(await App.arumBarut.hotelName())
+
+  },
+
   signup: async (e)=>{
     App.setLoading(true)
     const name = document.getElementById('name-s').value;
@@ -229,15 +373,6 @@ App = {
     
 
 
-
-
-  doReservation: async (e) => {
-    App.setLoading(true)
-    console.log(e.target.name)
-    const taskId = e.target.name
-    await App.todoList.doReservation(taskId)
-    window.location.reload()
-  },
 
   setLoading: (boolean) => {
     App.loading = boolean
@@ -272,4 +407,54 @@ function showSignup(){
   roomList.hide()
   addForm.hide()
 
+}
+
+
+
+async function doReservation(e,id){
+  App.setLoading(true)
+  console.log(e)
+  const taskId = e.target.name
+  const roomName = e.target.roomName
+  const hotelName = e.target.hotelName
+
+  
+  switch (id) {
+    case 1:
+      await App.todoList.doReservation(taskId);
+      break;
+
+    case 2:
+      await App.sideLowe.doReservation(taskId);
+
+      break;
+
+    case 3:
+      await App.arumBarut.doReservation(taskId);
+
+      break;
+
+    case 4:
+      await App.xantheResort.doReservation(taskId);
+
+      break;
+
+    default:
+      break;
+  }
+
+  await App.user.saveReservation(roomName,hotelName)
+
+  window.location.reload()
+}
+
+async function renderUserReservations(){
+  const USER = App.user
+
+  var resCount = await USER.reservationCount()
+  for (var i = 1; i <= resCount; i++) {
+    let reservation = await App.user.reservations(i)
+    console.log(reservation)
+   
+  }
 }

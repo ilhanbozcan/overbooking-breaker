@@ -4,6 +4,8 @@ import "solidity-string-utils/StringUtils.sol";
 
 contract User {
   uint public userCount = 0;
+  uint public reservationCount = 0;
+
 
   struct User {
     uint id;
@@ -11,10 +13,16 @@ contract User {
     string password;
   }
 
+   struct Reservation{
+    uint id;
+    string hotelName;
+    string roomName;
+  }
+
   
 
   mapping(uint => User) public users;
-
+  mapping(uint => Reservation) public reservations;
 
 
 
@@ -23,6 +31,17 @@ contract User {
     string name,
     string password
   );
+
+
+  event ReservationSaved(
+    uint id,
+    string hotelName,
+    string roomName
+  );
+  
+
+   
+
 
   constructor() public {
     createUser("admin","admin");
@@ -33,6 +52,12 @@ contract User {
     userCount++;
     users[userCount] = User(userCount,_name, _password);
     emit UserCreated(userCount, _name, _password);
+  }
+
+  function saveReservation(string memory hotelName, string memory roomName) public {
+    reservationCount++;
+    reservations[reservationCount] = Reservation(reservationCount,hotelName, roomName);
+    emit ReservationSaved(reservationCount, hotelName, roomName);
   }
 
    function loginUser(string memory _name, string memory _password) public returns(bool) {
