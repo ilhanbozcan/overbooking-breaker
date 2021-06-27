@@ -184,7 +184,7 @@ App = {
       const taskId = room[0].toNumber()
       const taskContent = room[1]
       const taskAllocation = room[2]
-
+      document.getElementById("img").src="./assets/"+taskContent+".jpg"
       // Create the html for the task
       const $newTaskTemplate = $taskTemplate.clone()
       $newTaskTemplate.find('.content').html(taskContent)
@@ -196,7 +196,6 @@ App = {
                       .on('click',(e)=>{
                         doReservation(e,1)
                       } )
-      
       $('#taskList').append($newTaskTemplate)
       //table for admin
       var row = table.insertRow();
@@ -216,11 +215,12 @@ App = {
 
       console.log('for a girdi')
       // Fetch the task data from the blockchain
-      
       const room = await App.sideLowe.rooms(i)
       const taskId = room[0].toNumber()
       const taskContent = room[1]
       const taskAllocation = room[2]
+      document.getElementById("img").src="./assets/"+taskContent+".jpg"
+
       // Create the html for the task
       const $newTaskTemplate = $taskTemplate.clone()
       $newTaskTemplate.find('.content').html(taskContent )
@@ -256,6 +256,7 @@ App = {
       const taskId = room[0].toNumber()
       const taskContent = room[1]
       const taskAllocation = room[2]
+      document.getElementById("img").src="./assets/"+taskContent+".jpg"
 
       // Create the html for the task
       const $newTaskTemplate = $taskTemplate.clone()
@@ -292,6 +293,7 @@ App = {
       const taskId = room[0].toNumber()
       const taskContent = room[1]
       const taskAllocation = room[2]
+      document.getElementById("img").src="./assets/"+taskContent+".jpg"
 
       // Create the html for the task
       const $newTaskTemplate = $taskTemplate.clone()
