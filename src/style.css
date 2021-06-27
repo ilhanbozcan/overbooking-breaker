@@ -17,10 +17,9 @@
   
   body {
     font-family: sans-serif;
-    background: linear-gradient(#141e30, #243b55);
+    background-color:  #243b55;
     background-position: center center;
     background-size: cover;
-    background-repeat: no-repeat;
   }
   
   input {
@@ -28,7 +27,9 @@
     border: none;
     background: transparent;
   }
-  
+  li{
+    float:left;
+  }
   .login-box {
     position: absolute;
     top: 50%;
@@ -113,11 +114,27 @@
                 0 0 50px #03e9f4,
                 0 0 100px #03e9f4;
   }
-  
+
   .login-box a span {
     position: absolute;
     display: block;
   }
+  .app-main-left {
+    flex: 4;
+    display: flex;
+    flex-wrap: wrap;
+  }
+.info{
+  background-color:bisque;
+  color: #000;
+  padding: 5%;
+  border-bottom-left-radius:20px ;
+  border-bottom-right-radius:20px ;
+}
+.info span{
+  font-weight: bold;
+  color:#6d457c
+}
   
   @keyframes btnAnimA {
     0% {

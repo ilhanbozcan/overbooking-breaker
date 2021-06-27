@@ -30,8 +30,8 @@ contract XantheResort {
   );
 
   constructor() public {
-    createRoom("Single Room xanthe",10);
-    createRoom("Double Room xanthe",10);
+    createRoom("Single Room Xanthe",10);
+    createRoom("Double Room Xanthe",10);
 
   }
 

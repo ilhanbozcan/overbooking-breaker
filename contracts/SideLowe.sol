@@ -32,7 +32,6 @@ contract SideLowe {
   constructor() public {
     createRoom("Single Room Löwe",10);
     createRoom("Double Room Löwe",10);
-
   }
 
 
