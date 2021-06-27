@@ -5,6 +5,8 @@
  const signup = $('#signup')
  const signupButton = $('#b-signup')
  const logoutButton = $('#b-logout')
+ const rooms=$('#rooms')
+ const roomTable=$('#table')
 
 
 
@@ -18,13 +20,16 @@ if(localStorage.getItem('user')){
     roomList.show()
     addForm.show()
     signupButton.hide()
+    rooms.hide()
+    roomTable.show()
   }
   else{
     login.hide()
     roomList.show()
     signup.hide()
     signupButton.hide()
-
+    rooms.show()
+    roomTable.hide()
   }
   
 }
@@ -34,6 +39,9 @@ else{
   signup.hide()
   signupButton.show()
   logoutButton.hide()
+  rooms.hide()
+  roomTable.hide()
+
 }
 
 
@@ -148,13 +156,27 @@ App = {
   },
 
   renderTasks: async () => {
-    const $taskTemplate = $('.taskTemplate')
-
-    
-    
+    const $taskTemplate = $('.taskTemplate')   
     const RIXOS_PREMIUM = App.todoList
     var roomCount = await RIXOS_PREMIUM.roomCount()
+    var table = document.getElementById("tables");
+    var header = table.createTHead();
+    var row = header.insertRow(0);
+    var cell = row.insertCell(0);
+    var cell2 = row.insertCell(1);
+    var cell3 = row.insertCell(2);
+    row.style.backgroundColor='#000'
+    cell.innerHTML="Hotel Name"
+    cell2.innerHTML="Room Name"
+    cell3.innerHTML="Count"
+
+    table.style.color='white'
+    document.getElementById("areaHotel").style.backgroundColor = "bisque";
+    document.getElementById("areaHotel").style.borderRadius = "20px";
+    document.getElementById("areaHotel").style.textAlign = "center";
     for (var i = 1; i <= roomCount; i++) {
+      document.getElementById("hotelName").innerHTML = "Rixos HOTEL";
+     
       console.log('for a girdi')
       // Fetch the task data from the blockchain
       
@@ -165,7 +187,8 @@ App = {
 
       // Create the html for the task
       const $newTaskTemplate = $taskTemplate.clone()
-      $newTaskTemplate.find('.content').html(taskContent + ' ' + taskAllocation)
+      $newTaskTemplate.find('.content').html(taskContent)
+      $newTaskTemplate.find('.allocation').html("Allocation : "+taskAllocation.toString())
       $newTaskTemplate.find('button')
                       .prop('name', taskId)
                       .prop('roomName', taskContent)
@@ -173,13 +196,24 @@ App = {
                       .on('click',(e)=>{
                         doReservation(e,1)
                       } )
+      
       $('#taskList').append($newTaskTemplate)
+      //table for admin
+      var row = table.insertRow();
+      var cell1 = row.insertCell(0);
+      var cell2 = row.insertCell(1);
+      var cell3 = row.insertCell(2);
+      cell1.innerHTML = 'Rixos Hotel';
+      cell2.innerHTML = taskContent;
+      cell3.innerHTML = taskAllocation  ;
       $newTaskTemplate.show()
     }
 
     const SIDE_LOWE = App.sideLowe
     var roomCount = await SIDE_LOWE.roomCount()
     for (var i = 1; i <= roomCount; i++) {
+      document.getElementById("hotelName").innerHTML = "Löwe HOTEL";
+
       console.log('for a girdi')
       // Fetch the task data from the blockchain
       
@@ -187,10 +221,10 @@ App = {
       const taskId = room[0].toNumber()
       const taskContent = room[1]
       const taskAllocation = room[2]
-
       // Create the html for the task
       const $newTaskTemplate = $taskTemplate.clone()
-      $newTaskTemplate.find('.content').html(taskContent + ' ' + taskAllocation)
+      $newTaskTemplate.find('.content').html(taskContent )
+      $newTaskTemplate.find('.allocation').html("Allocation : "+taskAllocation.toString())
       $newTaskTemplate.find('button')
                       .prop('name', taskId)
                       .prop('roomName', taskContent)
@@ -199,13 +233,22 @@ App = {
                       .on('click',(e)=>{
                         doReservation(e,2)
                       } )
+
       $('#taskList').append($newTaskTemplate)
+      var row = table.insertRow();
+      var cell1 = row.insertCell(0);
+      var cell2 = row.insertCell(1);
+      var cell3 = row.insertCell(2);
+      cell1.innerHTML = 'Löwe Hotel';
+      cell2.innerHTML = taskContent;
+      cell3.innerHTML = taskAllocation  ;
       $newTaskTemplate.show()
     }
 
     const ARUM_BARUT = App.arumBarut;
     var roomCount = await ARUM_BARUT.roomCount()
     for (var i = 1; i <= roomCount; i++) {
+      document.getElementById("hotelName").innerHTML = "Arum HOTEL";
       console.log('for a girdi')
       // Fetch the task data from the blockchain
       
@@ -216,7 +259,9 @@ App = {
 
       // Create the html for the task
       const $newTaskTemplate = $taskTemplate.clone()
-      $newTaskTemplate.find('.content').html(taskContent + ' ' + taskAllocation)
+      $newTaskTemplate.find('.content').html(taskContent)
+      $newTaskTemplate.find('.allocation').html("Allocation : "+taskAllocation.toString())
+
       $newTaskTemplate.find('button')
                       .prop('name', taskId)
                       .prop('roomName', taskContent)
@@ -226,12 +271,20 @@ App = {
                         doReservation(e,3)
                       } )
       $('#taskList').append($newTaskTemplate)
+      var row = table.insertRow();
+      var cell1 = row.insertCell(0);
+      var cell2 = row.insertCell(1);
+      var cell3 = row.insertCell(2);
+      cell1.innerHTML = 'Arum Hotel';
+      cell2.innerHTML = taskContent;
+      cell3.innerHTML = taskAllocation  ;
       $newTaskTemplate.show()
     }
 
     const XANTHE_RESORT = App.xantheResort
     var roomCount = await XANTHE_RESORT.roomCount()
     for (var i = 1; i <= roomCount; i++) {
+      document.getElementById("hotelName").innerHTML = "Xanthe HOTEL";
       console.log('for a girdi')
       // Fetch the task data from the blockchain
       
@@ -242,7 +295,9 @@ App = {
 
       // Create the html for the task
       const $newTaskTemplate = $taskTemplate.clone()
-      $newTaskTemplate.find('.content').html(taskContent + ' ' + taskAllocation)
+      $newTaskTemplate.find('.content').html(taskContent)
+      $newTaskTemplate.find('.allocation').html("Allocation : "+taskAllocation.toString())
+
       $newTaskTemplate.find('button')
                       .prop('name', taskId)
                       .prop('roomName', taskContent)
@@ -252,6 +307,13 @@ App = {
                         doReservation(e,4)
                       } )
       $('#taskList').append($newTaskTemplate)
+      var row = table.insertRow();
+      var cell1 = row.insertCell(0);
+      var cell2 = row.insertCell(1);
+      var cell3 = row.insertCell(2);
+      cell1.innerHTML = 'Xanthe Hotel';
+      cell2.innerHTML = taskContent;
+      cell3.innerHTML = taskAllocation  ;
       $newTaskTemplate.show()
     }
   },
